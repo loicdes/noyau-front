@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { HttpService } from 'src/services/http.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'TopShattaFront';
+
+  init = false;
+  constructor(private spinnerService: NgxSpinnerService, private http: HttpService) {
+    this.spinnerService.show();
+    this.http.init().subscribe( () => {
+      this.init = true;
+      this.spinnerService.hide();
+    });
+  }
 }

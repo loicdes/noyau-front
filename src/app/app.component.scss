@@ -1,0 +1,16 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+::ng-deep {
+    snack-bar-container {
+        &.error {
+            background-color: orange;
+        }
+        &.success {
+            background-color: green;
+        }
+        span {
+            color: white;
+            font-weight: bold;
+        }
+    }
+}
