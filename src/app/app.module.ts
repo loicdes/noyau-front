@@ -7,7 +7,7 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
@@ -25,7 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
     NgxSpinnerModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [NgxSpinnerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
