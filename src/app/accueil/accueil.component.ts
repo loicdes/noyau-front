@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { getCookie } from '../shared/utils';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-accueil',
@@ -10,6 +11,7 @@ import { getCookie } from '../shared/utils';
 export class AccueilComponent implements OnInit {
 
   user;
+  room;
   constructor(private router: Router) { }
 
   ngOnInit() {
@@ -17,7 +19,10 @@ export class AccueilComponent implements OnInit {
   }
 
   navigate(url) {
+    document.cookie = `USER=${this.user}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
+    document.cookie = `ROOM=${this.room}; expires=Thu, 01 Jan 1970 00:00:00 UTC`;
     document.cookie = `USER=${this.user}; expires=0`;
+    document.cookie = `ROOM=${this.room}; expires=0`;
     this.router.navigate([`/${url}`]);
   }
 

@@ -11,7 +11,6 @@
         }
         .game {
             margin: auto;
-            display: flex;
         }
         .empty-slot {
             background: aqua;
@@ -19,6 +18,12 @@
             border-radius: 10px;
         }
         .next-player {
+            position: absolute;
+            top: 10%;
+            width: 75%;
+            text-align: center;
+        } 
+        .room-number{
             position: absolute;
             top: 5%;
             width: 75%;

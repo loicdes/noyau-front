@@ -1,16 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DominosService } from 'src/services/dominos.service';
 import { MatSnackBar } from '@angular/material';
 import { SnackBarService } from 'src/services/snackbar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { getCookie } from '../shared/utils';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dominos',
   templateUrl: './dominos.component.html',
   styleUrls: ['./dominos.component.scss']
 })
-export class DominosComponent implements OnInit {
+export class DominosComponent implements OnInit, OnDestroy {
 
   players = [];
   spectators = [];
@@ -23,22 +25,30 @@ export class DominosComponent implements OnInit {
   selectedDomino;
   selectedSlot;
   currentPlayer;
+  currentRoom;
+  onDestroy$ = new Subject();
 
   constructor(private dominosService: DominosService, private snackBarService: SnackBarService,
               private spinnerService: NgxSpinnerService) { }
 
+  ngOnDestroy() {
+    this.onDestroy$.next();
+    this.dominosService.disconnect();
+  }
+
   ngOnInit() {
     this.currentPlayer = getCookie('USER');
+    this.currentRoom = getCookie('ROOM');
     this.dominosService.joinGame();
     this.showSpinner();
-    this.dominosService.messages.subscribe(msg => {
+    this.dominosService.messages.pipe(takeUntil(this.onDestroy$)).subscribe(msg => {
       this.players = msg.players;
       this.spectators = msg.spectators;
       this.snackBarService.open(msg.news, 'success');
       this.showSpinner();
     });
 
-    this.dominosService.gameUpdates.subscribe(msg => {
+    this.dominosService.gameUpdates.pipe(takeUntil(this.onDestroy$)).subscribe(msg => {
       this.selectedDomino = undefined;
       this.selectedSlot = undefined;
       this.board = msg.board;
@@ -48,7 +58,7 @@ export class DominosComponent implements OnInit {
       }
       if (msg.winner) {
         this.nextPlayer = undefined;
-        this.snackBarService.open(`${msg.nextPlayer} a gagné la partie !`, 'success', 10000);
+        this.snackBarService.open(`${msg.winner} a gagné la partie !`, 'success', 10000);
       }
       this.hands = msg.hands;
       this.hand = msg.hands ? msg.hands[getCookie('USER')] : this.hand;

@@ -1,18 +1,14 @@
 <div class="content">
     <div class="board">
         <p *ngIf="nextPlayer" class="next-player"> Next player : {{ nextPlayer }}</p>
+        <p class="room-number"> Salle n°  : {{ currentRoom }}</p>
         <div class="game">
-            <div class="empty-slot board-domino"
+            <img class="empty-slot board-domino"
             [style.opacity]="selectedSlot === 'start' ? '1' : '0.3'" (click)="selectedSlot = 'start'; play();">
-
-            </div>
             <img class="board-domino" *ngFor="let domino of board"
-             src="assets/img_dominos/{{ domino.left }}_{{ domino.right }}.png"
-             >
-             <div class="empty-slot board-domino"
+             src="assets/img_dominos/{{ domino.left }}_{{ domino.right }}.png">
+             <img class="empty-slot board-domino"
              [style.opacity]="selectedSlot === 'end' ? '1' : '0.3'" (click)="selectedSlot = 'end'; play();">
-
-             </div>
         </div>
         <ngx-spinner
         bdOpacity = 1
