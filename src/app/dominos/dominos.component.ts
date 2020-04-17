@@ -42,8 +42,14 @@ export class DominosComponent implements OnInit {
       this.selectedDomino = undefined;
       this.selectedSlot = undefined;
       this.board = msg.board;
-      this.nextPlayer = msg.nextPlayer;
-      this.snackBarService.open(`Next player : ${msg.nextPlayer}`, 'success');
+      if (msg.nextPlayer) {
+        this.nextPlayer = msg.nextPlayer;
+        this.snackBarService.open(`Prochain joueur : ${msg.nextPlayer}`, 'success');
+      }
+      if (msg.winner) {
+        this.nextPlayer = undefined;
+        this.snackBarService.open(`${msg.nextPlayer} a gagné la partie !`, 'success', 10000);
+      }
       this.hands = msg.hands;
       this.hand = msg.hands ? msg.hands[getCookie('USER')] : this.hand;
     });
@@ -54,7 +60,7 @@ export class DominosComponent implements OnInit {
   }
   showSpinner() {
     if (this.players.length !== this.maxPlayers) {
-      this.spinnerMessage = 'Waiting for niggas';
+      this.spinnerMessage = 'En attente de joueurs, prépare ton rhum...';
       this.spinnerService.show();
     } else {
       this.spinnerService.hide();
@@ -62,27 +68,41 @@ export class DominosComponent implements OnInit {
   }
 
   play() {
-    if (this.selectedDomino && this.selectedSlot && this.nextPlayer === getCookie('USER')) {
+    if (this.selectedDomino && this.selectedSlot && this.myTurn) {
       if (this.board.length === 0) {
         this.board.push(this.selectedDomino);
       } else if (this.selectedSlot === 'end' &&
-      (this.selectedDomino.right === this.board[0].right || this.selectedDomino.left === this.board[0].left )) {
-        this.board.push(this.selectedDomino);
-      } else if (this.selectedSlot === 'start' &&
       (this.selectedDomino.right === this.board[this.board.length - 1].right ||
-        this.selectedDomino.left === this.board[this.board.length - 1].left )) {
-        this.board.unshift(this.selectedDomino);
+       this.selectedDomino.left === this.board[this.board.length - 1].right )) {
+          if (this.selectedDomino.left !== this.board[this.board.length - 1].right) {
+            this.selectedDomino = this.swap(this.selectedDomino);
+          }
+          this.board.push(this.selectedDomino);
+      } else if (this.selectedSlot === 'start' &&
+      (this.selectedDomino.right === this.board[0].left ||
+       this.selectedDomino.left === this.board[0].left )) {
+         if (this.selectedDomino.right !== this.board[0].left) {
+           this.selectedDomino = this.swap(this.selectedDomino);
+         }
+         this.board.unshift(this.selectedDomino);
       } else {
         this.snackBarService.open('Tu ne peux pas jouer ça...', 'error');
         return;
       }
       const indexToRemove = this.hand.findIndex(d => d.left === this.selectedDomino.left && d.right === this.selectedDomino.right);
       this.hand.splice(indexToRemove, 1);
-      this.dominosService.turnOver(this.board);
+      this.dominosService.turnOver(this.board, this.hand);
     }
   }
   passer() {
-    this.dominosService.turnOver(this.board);
+    this.dominosService.turnOver(this.board, this.hand);
+  }
+
+  swap(domino) {
+    const temp = domino.right;
+    domino.right = domino.left;
+    domino.left = temp;
+    return domino;
   }
 
 }

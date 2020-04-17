@@ -22,8 +22,9 @@ export class DominosService {
         this.socket.on('DOMINOS-JOINED-SPECTATOR', message => this.messages.next(message));
         this.socket.on('DOMINOS-START-GAME', message => this.gameUpdates.next(message));
         this.socket.on('DOMINOS-NEXT-PLAYER', message => this.gameUpdates.next(message));
+        this.socket.on('DOMINOS-GAME-OVER', message => this.gameUpdates.next(message));
     }
-    turnOver(board) {
-        this.socket.emit('DOMINOS-TURN-OVER', {player: getCookie('USER'), board });
+    turnOver(board, hand) {
+        this.socket.emit('DOMINOS-TURN-OVER', {player: getCookie('USER'), board, hand });
     }
 }
