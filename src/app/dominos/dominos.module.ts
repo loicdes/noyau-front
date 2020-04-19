@@ -4,6 +4,7 @@ import { DominosComponent } from './dominos.component';
 import { DominosRoutingModule } from './dominos-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 
@@ -13,7 +14,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     CommonModule,
     DominosRoutingModule,
     SharedModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    DragDropModule
   ]
 })
 export class DominosModule { }

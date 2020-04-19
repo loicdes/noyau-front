@@ -114,5 +114,4 @@ export class DominosComponent implements OnInit, OnDestroy {
     domino.left = temp;
     return domino;
   }
-
 }

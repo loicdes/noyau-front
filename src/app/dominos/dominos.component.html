@@ -1,13 +1,21 @@
 <div class="content">
     <div class="board">
-        <p *ngIf="nextPlayer" class="next-player"> Next player : {{ nextPlayer }}</p>
-        <p class="room-number"> Salle n°  : {{ currentRoom }}</p>
-        <div class="game">
-            <img class="empty-slot board-domino"
-            [style.opacity]="selectedSlot === 'start' ? '1' : '0.3'" (click)="selectedSlot = 'start'; play();">
-            <img class="board-domino" *ngFor="let domino of board"
+        <p *ngIf="nextPlayer" class="next-player"> Au tour de : {{ nextPlayer }}</p>
+        <p class="room-number"> Salle n° : {{ currentRoom }}</p>
+        <div  class="game">
+            <img cdkDropList [cdkDropListConnectedTo]="[handList]"
+            #empty1="cdkDropList" (mouseover)="selectedSlot='start'" 
+            (mouseleave)="selectedSlot=undefined" 
+            *ngIf="myTurn" class="empty-slot board-domino"
+            [style.opacity]="selectedSlot === 'start' ? '1' : '0.3'" 
+            (click)="selectedSlot = 'start'; play();">
+            <img class="board-domino"[ngClass]="domino.left === domino.right ? 'double' : ''" *ngFor="let domino of board"
              src="assets/img_dominos/{{ domino.left }}_{{ domino.right }}.png">
-             <img class="empty-slot board-domino"
+             <img cdkDropList [cdkDropListConnectedTo]="[handList]" 
+             (mouseover)="selectedSlot='end'"
+             (mouseleave)="selectedSlot=undefined" 
+             #empty2="cdkDropList" *ngIf="myTurn" 
+             class="empty-slot board-domino"
              [style.opacity]="selectedSlot === 'end' ? '1' : '0.3'" (click)="selectedSlot = 'end'; play();">
         </div>
         <ngx-spinner
@@ -21,17 +29,24 @@
         <p style="color: white" > {{ spinnerMessage }} </p>
         </ngx-spinner>
 
-        <div class="hand" *ngIf="hand.length  > 0">
-            <p>Hand</p>
+        <div class="hand" *ngIf="hand.length  > 0"
+>
+            <p>Mon jeu</p>
             <mat-list role="list">
-                <mat-list-item role="listitem" *ngFor="let domino of hand">
-                    <img (click)="selectedDomino = domino; play();" 
+                <mat-list-item role="listitem" *ngFor="let domino of hand"
+                cdkDropList
+                #handList="cdkDropList"
+                [cdkDropListConnectedTo]="[empty1, empty2]"
+                (cdkDropListDropped)="play()">
+                    <img cdkDrag 
+                    (click)="selectedDomino = domino; play();" 
+                    (cdkDragStarted)="selectedDomino = domino" 
                     [style.opacity]="domino === selectedDomino ? '1' : '0.5'"
                     class="domino" 
                     src="assets/img_dominos/{{ domino.left }}_{{ domino.right }}.png">
                 </mat-list-item>
             </mat-list>
-            <button *ngIf="myTurn" (click)="passer()">
+            <button mat-raised-button *ngIf="myTurn" (click)="passer()">
                 Boudé
             </button>
         </div>
@@ -40,7 +55,7 @@
         <p>Players : </p>
         <mat-list role="list">
             <mat-list-item role="listitem" *ngFor="let player of players">
-                {{ player }} <!-- {{ hands[player] ? ' - ' + hands[player].length + 'dominos' : '' }} -->
+                - {{ player }} <!-- {{ hands[player] ? ' - ' + hands[player].length + 'dominos' : '' }} -->
             </mat-list-item>
         </mat-list>
     </div>
