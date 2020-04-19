@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { DominosService } from 'src/services/dominos.service';
-import { MatSnackBar } from '@angular/material';
 import { SnackBarService } from 'src/services/snackbar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { getCookie } from '../shared/utils';
@@ -29,7 +28,7 @@ export class DominosComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject();
 
   constructor(private dominosService: DominosService, private snackBarService: SnackBarService,
-              private spinnerService: NgxSpinnerService) { }
+              private spinnerService: NgxSpinnerService, private cdRef: ChangeDetectorRef) { }
 
   ngOnDestroy() {
     this.onDestroy$.next();
@@ -37,6 +36,7 @@ export class DominosComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.cdRef.detectChanges();
     this.currentPlayer = getCookie('USER');
     this.currentRoom = getCookie('ROOM');
     this.dominosService.joinGame();

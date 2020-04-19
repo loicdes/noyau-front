@@ -4,7 +4,7 @@
         <p class="room-number"> Salle n° : {{ currentRoom }}</p>
         <div  class="game">
             <img cdkDropList [cdkDropListConnectedTo]="['handList']"
-            id="empty1" (mouseover)="selectedSlot='start'" 
+            #empty1="cdkDropList" (mouseover)="selectedSlot='start'" 
             (mouseleave)="selectedSlot=undefined" 
             *ngIf="myTurn" class="empty-slot board-domino"
             [style.opacity]="selectedSlot === 'start' ? '1' : '0.3'" 
@@ -14,7 +14,7 @@
              <img cdkDropList [cdkDropListConnectedTo]="['handList']" 
              (mouseover)="selectedSlot='end'"
              (mouseleave)="selectedSlot=undefined" 
-             id="empty2" *ngIf="myTurn" 
+             #empty2="cdkDropList" *ngIf="myTurn" 
              class="empty-slot board-domino"
              [style.opacity]="selectedSlot === 'end' ? '1' : '0.3'" (click)="selectedSlot = 'end'; play();">
         </div>
@@ -35,7 +35,7 @@
             <mat-list role="list">
                 <mat-list-item role="listitem" *ngFor="let domino of hand"
                 cdkDropList
-                id="handList"
+                #handList="cdkDropList"
                 [cdkDropListConnectedTo]="['empty1', 'empty2']"
                 (cdkDropListDropped)="play()">
                     <img cdkDrag 
