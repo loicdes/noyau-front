@@ -1,10 +1,11 @@
 <div class="content">
     <div class="board">
         <p *ngIf="nextPlayer" class="next-player"> Au tour de : {{ nextPlayer }}</p>
+        <p *ngIf="winner" class="next-player">{{ winner }} a gagné la partie !</p>
         <p class="room-number"> Salle n° : {{ currentRoom }}</p>
-        <div  class="game">
+        <div class="game">
             <img cdkDropList [cdkDropListConnectedTo]="['handList']"
-            #empty1="cdkDropList" (mouseover)="selectedSlot='start'" 
+            #empty1="cdkDropList" (mouseover)="selectedSlot='start'"
             (mouseleave)="selectedSlot=undefined" 
             *ngIf="myTurn" class="empty-slot board-domino"
             [style.opacity]="selectedSlot === 'start' ? '1' : '0.3'" 
@@ -33,17 +34,19 @@
 >
             <p>Mon jeu</p>
             <mat-list role="list">
-                <mat-list-item role="listitem" *ngFor="let domino of hand"
+                <mat-list-item role="listitem" *ngFor="let domino of hand">
+                <div
                 cdkDropList
                 #handList="cdkDropList"
                 [cdkDropListConnectedTo]="['empty1', 'empty2']"
-                (cdkDropListDropped)="play()">
+                (cdkDropListDropped)="setSelectedSlot($event); play()">
                     <img cdkDrag 
                     (click)="selectedDomino = domino; play();" 
-                    (cdkDragStarted)="selectedDomino = domino" 
+                    (cdkDragStarted)="selectedDomino = domino;" 
                     [style.opacity]="domino === selectedDomino ? '1' : '0.5'"
                     class="domino" 
                     src="assets/img_dominos/{{ domino.left }}_{{ domino.right }}.png">
+                </div>
                 </mat-list-item>
             </mat-list>
             <button mat-raised-button *ngIf="myTurn" (click)="passer()">

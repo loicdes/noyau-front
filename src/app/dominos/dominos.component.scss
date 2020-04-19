@@ -63,18 +63,20 @@
                 overflow: auto;
                 @media screen and (max-width: 920px) {
                     :first-child {
-                        margin-left: -30px ;
+                        margin-left: -10px ;
                     }
                 }
                 .mat-list-item {
-                    height: 65px;
-                    width: auto;
-                    @media screen and (max-width: 920px) {
-                        margin-right: -65px;
-                        &:last-of-type {
-                            max-width: 85px;
-                        }
-                      }
+                    div {
+                        height: 25px;
+                        width: auto;
+                        @media screen and (max-width: 920px) {
+                            margin-right: -65px;
+                            &:last-of-type {
+                                max-width: 85px;
+                            }
+                          }
+                    }
                 }
                 .domino {
                     width: 80px;

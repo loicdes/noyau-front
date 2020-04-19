@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { getCookie } from '../shared/utils';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ɵangular_packages_router_router_b } from '@angular/router';
 
 @Component({
   selector: 'app-dominos',
@@ -21,11 +22,14 @@ export class DominosComponent implements OnInit, OnDestroy {
   hand = [];
   hands = [];
   nextPlayer;
+  winner;
   selectedDomino;
   selectedSlot;
   currentPlayer;
   currentRoom;
   onDestroy$ = new Subject();
+  @ViewChild('empty1', undefined) empty1: ElementRef<any>;
+  @ViewChild('empty2', undefined) empty2: ElementRef<any>;
 
   constructor(private dominosService: DominosService, private snackBarService: SnackBarService,
               private spinnerService: NgxSpinnerService, private cdRef: ChangeDetectorRef) { }
@@ -58,6 +62,7 @@ export class DominosComponent implements OnInit, OnDestroy {
       }
       if (msg.winner) {
         this.nextPlayer = undefined;
+        this.winner = msg.winner;
         this.snackBarService.open(`${msg.winner} a gagné la partie !`, 'success', 10000);
       }
       this.hands = msg.hands;
@@ -113,5 +118,21 @@ export class DominosComponent implements OnInit, OnDestroy {
     domino.right = domino.left;
     domino.left = temp;
     return domino;
+  }
+
+  setSelectedSlot(event) {
+    if (window.ontouchstart === undefined) {
+      return;
+    }
+    // tslint:disable: no-string-literal
+    this.selectedSlot = this.inBound(this.empty1['element'].nativeElement, event) ? 'start' :
+                        this.inBound(this.empty2['element'].nativeElement, event) ? 'end' : undefined;
+  }
+  inBound(element, event) {
+    const xBound = element.x - element.width <= event.item.element.nativeElement.x + event.distance.x &&
+                   element.x + element.width >= event.item.element.nativeElement.x + event.distance.x;
+    const yBound = element.y - element.height <= event.item.element.nativeElement.y + event.distance.y &&
+                   element.y >= event.item.element.nativeElement.y + event.distance.y;
+    return xBound && yBound;
   }
 }
