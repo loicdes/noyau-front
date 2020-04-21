@@ -33,7 +33,7 @@ export class PyramideComponent implements OnInit, OnDestroy {
   board = [];
   hand = [];
   _hand = [];
-  etages;
+  etages = 0;
   dialog;
   onDestroy$ = new Subject();
   showedCards = [];

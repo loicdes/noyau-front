@@ -12,7 +12,7 @@
         <div class="hand" *ngIf="hand.length > 0">
             <div class="hand-cards">
                 <img *ngFor="let card of hand"
-                class="card" 
+                class="card" cdkDrag
                 [src]="getImageUrl(card, true)"
                 (click)="show(card, hand)">
             </div>

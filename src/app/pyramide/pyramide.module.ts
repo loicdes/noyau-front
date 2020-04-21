@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PyramideComponent } from './pyramide.component';
 import { PyramideRoutingModule } from './pyramide-routing.module';
 import { SharedModule } from '../shared/shared.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 
@@ -11,7 +12,8 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     PyramideRoutingModule,
-    SharedModule
+    SharedModule,
+    DragDropModule
   ]
 })
 export class PyramideModule { }
