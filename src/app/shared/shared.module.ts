@@ -7,6 +7,7 @@ import { MatIconModule, MatExpansionModule, MatFormFieldModule, MatInputModule,
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { DialogPopupComponent } from './dialog-popup/dialog-popup.component';
 
 @NgModule({
     imports: [
@@ -71,7 +72,9 @@ import { CommonModule } from '@angular/common';
         MatBadgeModule,
         MatTabsModule,
         MatProgressSpinnerModule
-    ]
+    ],
+    declarations: [DialogPopupComponent],
+    entryComponents : [DialogPopupComponent]
 
 })
 export class SharedModule { }

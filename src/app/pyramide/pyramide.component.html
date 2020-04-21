@@ -1,1 +1,35 @@
-<p>pyramide works!</p>
+<div class="content">
+    <div class="board">
+        <p class="room-number"> Salle n° : {{ currentRoom }}</p>
+        <div class="game">
+            <div class="line" *ngFor="let line of board">
+                <img *ngFor="let card of line"
+                class="card" 
+                [src]="getImageUrl(card)"
+                (click)="show(card)">
+            </div>
+        </div>
+        <div class="hand" *ngIf="hand.length > 0">
+            <div class="hand-cards">
+                <img *ngFor="let card of hand"
+                class="card" 
+                [src]="getImageUrl(card, true)"
+                (click)="show(card, hand)">
+            </div>
+        </div>
+    </div>
+    
+    <div class="right-menu">
+        <p>Players : </p>
+        <mat-list role="list">
+            <mat-list-item role="listitem" *ngFor="let player of players">
+               <p> - {{ player }} </p> <!-- {{ hands[player] ? ' - ' + hands[player].length + 'dominos' : '' }} -->
+            </mat-list-item>
+        </mat-list>
+        <mat-form-field *ngIf="canEdit">
+            <mat-label>Etages</mat-label>
+            <input matInput type="number" [(ngModel)]="etages">
+        </mat-form-field>
+        <button *ngIf="canEdit" [disabled]="etages <= 0" mat-raised-button (click)="startGame()">Commencer</button>
+    </div>
+</div>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PyramideComponent } from './pyramide.component';
 import { PyramideRoutingModule } from './pyramide-routing.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -9,7 +10,8 @@ import { PyramideRoutingModule } from './pyramide-routing.module';
   declarations: [PyramideComponent],
   imports: [
     CommonModule,
-    PyramideRoutingModule
+    PyramideRoutingModule,
+    SharedModule
   ]
 })
 export class PyramideModule { }
