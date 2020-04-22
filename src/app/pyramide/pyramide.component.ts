@@ -79,7 +79,7 @@ export class PyramideComponent implements OnInit, OnDestroy {
     this.pyramideService.prelimUpdates.pipe(takeUntil(this.onDestroy$)).subscribe(msg => {
       if (msg.gameStep === GAME_STEPS.ASCENDING) {
         this.snackBarService.open('Les cartes vont se retourner dans 15sec, ' +
-                                  'vous pouvez les replacer dans l\ordre désiré', 'success', 15000);
+                                  'vous pouvez les replacer dans l\'ordre désiré', 'success', 15000);
         setTimeout(() => this.gameStatus = GAME_STEPS.ASCENDING, 15000);
         return;
       }
