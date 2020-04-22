@@ -5,10 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AccueilComponent } from './accueil/accueil.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatSnackBarModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatButtonModule, MatSnackBarModule, MatFormFieldModule, MatInputModule, MatIconModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { HttpClientModule } from '@angular/common/http';
+import { DialogPopupComponent } from './shared/dialog-popup/dialog-popup.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,15 +20,10 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule,
-    MatButtonModule,
     BrowserAnimationsModule,
-    MatSnackBarModule,
     NgxSpinnerModule,
     HttpClientModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule
+    SharedModule
   ],
   providers: [NgxSpinnerService],
   bootstrap: [AppComponent]

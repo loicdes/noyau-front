@@ -1,5 +1,6 @@
 <div class="content">
     <div class="board">
+        <mat-icon class="help" (click)="help()">help</mat-icon>
         <p *ngIf="nextPlayer" class="next-player"> Au tour de : {{ nextPlayer }}</p>
         <p *ngIf="winner" class="next-player">{{ winner }} a gagné la partie !</p>
         <p class="room-number"> Salle n° : {{ currentRoom }}</p>

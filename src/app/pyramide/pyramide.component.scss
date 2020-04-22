@@ -9,6 +9,13 @@
             height: 100px;
             width: 60px;
         }
+        .help{
+            position: absolute;
+            top: 0;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+        }
         .hand {
             display: inline-flex;
             width: 100%;

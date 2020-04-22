@@ -12,25 +12,23 @@ export class DominosService {
     private socket;
     public messages = new Subject<any>();
     public gameUpdates = new Subject<any>();
-    currentUser = getCookie('USER');
-    currentRoom = getCookie('ROOM');
 
     constructor() {
         this.socket = io(this.url);
     }
     joinGame() {
-        this.socket.emit('DOMINOS-STARTED', { user: this.currentUser, room: this.currentRoom });
-        this.socket.on('DOMINOS-JOINED-' + this.currentRoom, message => this.messages.next(message));
-        this.socket.on('DOMINOS-JOINED-SPECTATOR-' + this.currentRoom, message => this.messages.next(message));
-        this.socket.on('DOMINOS-START-GAME-' + this.currentRoom, message => this.gameUpdates.next(message));
-        this.socket.on('DOMINOS-NEXT-PLAYER-' + this.currentRoom, message => this.gameUpdates.next(message));
-        this.socket.on('DOMINOS-GAME-OVER-' + this.currentRoom, message => this.gameUpdates.next(message));
-        this.socket.on('DOMINOS-GAME-OVER-' + this.currentRoom, message => this.gameUpdates.next(message));
+        this.socket.emit('DOMINOS-STARTED', { user: getCookie('USER'), room: getCookie('ROOM') });
+        this.socket.on('DOMINOS-JOINED-' + getCookie('ROOM'), message => this.messages.next(message));
+        this.socket.on('DOMINOS-JOINED-SPECTATOR-' + getCookie('ROOM'), message => this.messages.next(message));
+        this.socket.on('DOMINOS-START-GAME-' + getCookie('ROOM'), message => this.gameUpdates.next(message));
+        this.socket.on('DOMINOS-NEXT-PLAYER-' + getCookie('ROOM'), message => this.gameUpdates.next(message));
+        this.socket.on('DOMINOS-GAME-OVER-' + getCookie('ROOM'), message => this.gameUpdates.next(message));
+        this.socket.on('DOMINOS-GAME-OVER-' + getCookie('ROOM'), message => this.gameUpdates.next(message));
     }
     turnOver(board, hand) {
-        this.socket.emit('DOMINOS-TURN-OVER', {player: this.currentUser, board, hand, room: this.currentRoom });
+        this.socket.emit('DOMINOS-TURN-OVER', {player: getCookie('USER'), board, hand, room: getCookie('ROOM') });
     }
     disconnect() {
-        this.socket.emit('DOMINOS-DISCONNECT', {user: this.currentUser, room: this.currentRoom });
+        this.socket.emit('DOMINOS-DISCONNECT', {user: getCookie('USER'), room: getCookie('ROOM') });
     }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { getCookie } from '../shared/utils';
-import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { DialogPopupComponent } from '../shared/dialog-popup/dialog-popup.component';
 
 @Component({
   selector: 'app-accueil',
@@ -12,7 +13,15 @@ export class AccueilComponent implements OnInit {
 
   user;
   room;
-  constructor(private router: Router) { }
+  helpMessage = [
+    '- Formez un groupe avec les joueurs sur votre réseau social préféré',
+    '- Appelez-vous en vocal ou vidéo pour une meilleure expérience',
+    '- Le premier joueur entre un nom de salle au choix et choisit le jeu auquel il veut jouer',
+    '- Il partage ensuite le numéro de salle aux autres joueurs qui vont alors le rejoindre',
+    '- Ps: N\'oubliez pas vos bouteilles de rhum',
+    'L\'abus d\'alcool est dangereux pour la santé, à consommer avec modération ;)',
+  ];
+  constructor(private router: Router, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.user = getCookie('USER');
@@ -24,4 +33,7 @@ export class AccueilComponent implements OnInit {
     this.router.navigate([`/${url}`]);
   }
 
+  help() {
+    this.dialog.open(DialogPopupComponent, { data: { title: 'Comment jouer ?', message: this.helpMessage } });
+  }
 }

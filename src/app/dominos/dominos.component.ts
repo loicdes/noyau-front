@@ -6,6 +6,8 @@ import { getCookie } from '../shared/utils';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ɵangular_packages_router_router_b } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { DialogPopupComponent } from '../shared/dialog-popup/dialog-popup.component';
 
 @Component({
   selector: 'app-dominos',
@@ -31,8 +33,17 @@ export class DominosComponent implements OnInit, OnDestroy {
   @ViewChild('empty1', undefined) empty1: ElementRef<any>;
   @ViewChild('empty2', undefined) empty2: ElementRef<any>;
 
+  helpMessage = [
+    '- Lorsque c\'est ton tour, choisis un domino et fais le glisser vers une des zones vides jusqu\'à ce qu\'elle brille',
+    '- Sur téléphone, privilégie plutot le clic sur un domino puis sur une zone vide',
+    '- Le jeu s\'arrête lorsqu\'un joueur n\'a plus de dominos, vous devez alors quitter puis créer une nouvelle salle',
+    '- Si vous êtes tous boudé, quittez puis créez une nouvelle salle',
+    'Ps: Je t\'avais dit que c\'est une version bêta...'
+  ];
+
   constructor(private dominosService: DominosService, private snackBarService: SnackBarService,
-              private spinnerService: NgxSpinnerService, private cdRef: ChangeDetectorRef) { }
+              private spinnerService: NgxSpinnerService, private cdRef: ChangeDetectorRef,
+              private dialog: MatDialog) { }
 
   ngOnDestroy() {
     this.onDestroy$.next();
@@ -134,5 +145,9 @@ export class DominosComponent implements OnInit, OnDestroy {
     const yBound = element.y - element.height <= event.item.element.nativeElement.y + event.distance.y &&
                    element.y >= event.item.element.nativeElement.y + event.distance.y;
     return xBound && yBound;
+  }
+
+  help() {
+    this.dialog.open(DialogPopupComponent, { data: { title: 'Comment jouer ?', message: this.helpMessage } });
   }
 }

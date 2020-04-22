@@ -23,7 +23,9 @@
   .spacer {
     flex: 1;
   }
-
+mat-icon {
+  cursor: pointer;
+}
   .toolbar {
     height: 60px;
     padding-right: 20px;

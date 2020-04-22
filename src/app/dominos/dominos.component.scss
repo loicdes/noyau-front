@@ -40,6 +40,14 @@
             font-weight: 600;
             font-size: x-large;
         }
+        .help{
+            position: absolute;
+            top: 0;
+            width: 100%;
+            text-align: center;
+            cursor: pointer;
+            color: white;
+        }
         .hand {    
             position: absolute;
             bottom: 5%;

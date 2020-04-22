@@ -1,5 +1,5 @@
 <div class="popup-container">
-    <p>{{ data.title }}</p>
+    <p class="title">{{ data.title }}</p>
     <div *ngIf="data.buttons">
         <button mat-raised-button *ngFor="let button of data.buttons" (click)="close(button)">
             {{ button }}
@@ -8,5 +8,8 @@
     <div *ngIf="data.img" [style.display]="'flex'">
         <img width="60px" height="100px" [style.margin]="'auto'"
         src="../../../assets/img_cartes/{{data.img.name}}.png">
+    </div>
+    <div *ngIf="data.message">
+        <p *ngFor="let line of data.message"> {{ line }}</p>
     </div>
 </div>

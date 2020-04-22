@@ -1,5 +1,6 @@
 <div class="content">
     <div class="board">
+        <mat-icon class="help" (click)="help()">help</mat-icon>
         <p class="room-number"> Salle n° : {{ currentRoom }}</p>
         <div class="game">
             <div class="line" *ngFor="let line of board">

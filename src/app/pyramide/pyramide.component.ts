@@ -38,6 +38,17 @@ export class PyramideComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject();
   showedCards = [];
   gameStatus  = GAME_STEPS.NOT_STARTED;
+  helpMessage = [
+    '- Le premier joueur est maître du jeu',
+    '- Il décide du moment où la partie débute, du nombre d\'étages de la pyramide, '
+    + 'et sera en charge de retourner les cartes lors de l\'ascension de la pyramide',
+    '- Lors de la phase préliminaire, chaque joueur se verra poser des questions (rouge ou noir, ...)' +
+    ' et se verra attribuer une carte.',
+    '- Si le joueur a bien répondu, il distribue une gorgée, sinon il boit. Tu connais le jeu...',
+    '- Lors de l\'ascension de la pyramide, le maître du jeu va retourner des cartes',
+    '- Vous allez alors dire à qui vous faites boire, la suite tu connais...',
+    'Ps: Si vous n\'êtes pas assez boulé, vous pouvez quitter puis recréer une salle pour recommencer.'
+  ];
   constructor(private snackBarService: SnackBarService, private pyramideService: PyramideService,
               private matDialog: MatDialog) { }
 
@@ -117,6 +128,14 @@ export class PyramideComponent implements OnInit, OnDestroy {
       return;
     }
     if (hand) {
+      this.dialog = this.matDialog.open(DialogPopupComponent, {
+        data: {
+          img: {
+            name: card.value + '_' + card.sign
+          },
+          title: 'Je montre'
+        }
+      });
       this.pyramideService.show(card, 'de sa main');
     } else {
       this.pyramideService.reveal(card);
@@ -128,5 +147,9 @@ export class PyramideComponent implements OnInit, OnDestroy {
             this.showedCards.find(c => c.value === card.value && c.sign === card.sign) ?
             `assets/img_cartes/${card.value}_${ card.sign }.png` :
             'assets/img_cartes/dos-bleu.png';
+  }
+
+  help() {
+    this.matDialog.open(DialogPopupComponent, { data: { title: 'Comment jouer ?', message: this.helpMessage } });
   }
 }
