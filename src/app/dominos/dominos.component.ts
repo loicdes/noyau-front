@@ -17,7 +17,6 @@ import { DialogPopupComponent } from '../shared/dialog-popup/dialog-popup.compon
 export class DominosComponent implements OnInit, OnDestroy {
 
   players = [];
-  spectators = [];
   spinnerMessage;
   maxPlayers = 3;
   board = [];
@@ -58,8 +57,17 @@ export class DominosComponent implements OnInit, OnDestroy {
     this.showSpinner();
     this.dominosService.messages.pipe(takeUntil(this.onDestroy$)).subscribe(msg => {
       this.players = msg.players;
-      this.spectators = msg.spectators;
-      this.snackBarService.open(msg.news, 'success');
+      if (msg.nextPlayer) {
+        this.board = msg.board || this.board;
+        this.hand = getCookie('HAND') ? JSON.parse(getCookie('HAND')) : this.hand;
+        this.nextPlayer = msg.nextPlayer;
+        this.snackBarService.open(`Prochain joueur : ${msg.nextPlayer}`, 'success');
+      }
+      if (msg.boude) {
+        this.dialog.open(DialogPopupComponent, { data: { title: msg.news } });
+      } else {
+        this.snackBarService.open(msg.news, 'success');
+      }
       this.showSpinner();
     });
 
@@ -118,10 +126,11 @@ export class DominosComponent implements OnInit, OnDestroy {
       const indexToRemove = this.hand.findIndex(d => d.left === this.selectedDomino.left && d.right === this.selectedDomino.right);
       this.hand.splice(indexToRemove, 1);
       this.dominosService.turnOver(this.board, this.hand);
+      document.cookie = `HAND=${JSON.stringify(this.hand)}; expires=0`;
     }
   }
   passer() {
-    this.dominosService.turnOver(this.board, this.hand);
+    this.dominosService.turnOver(this.board, this.hand, true);
   }
 
   swap(domino) {

@@ -23,10 +23,9 @@ export class DominosService {
         this.socket.on('DOMINOS-START-GAME-' + getCookie('ROOM'), message => this.gameUpdates.next(message));
         this.socket.on('DOMINOS-NEXT-PLAYER-' + getCookie('ROOM'), message => this.gameUpdates.next(message));
         this.socket.on('DOMINOS-GAME-OVER-' + getCookie('ROOM'), message => this.gameUpdates.next(message));
-        this.socket.on('DOMINOS-GAME-OVER-' + getCookie('ROOM'), message => this.gameUpdates.next(message));
     }
-    turnOver(board, hand) {
-        this.socket.emit('DOMINOS-TURN-OVER', {player: getCookie('USER'), board, hand, room: getCookie('ROOM') });
+    turnOver(board, hand, boude?) {
+        this.socket.emit('DOMINOS-TURN-OVER', {player: getCookie('USER'), boude, board, hand, room: getCookie('ROOM') });
     }
     disconnect() {
         this.socket.emit('DOMINOS-DISCONNECT', {user: getCookie('USER'), room: getCookie('ROOM') });

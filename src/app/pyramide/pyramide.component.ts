@@ -78,9 +78,9 @@ export class PyramideComponent implements OnInit, OnDestroy {
 
     this.pyramideService.prelimUpdates.pipe(takeUntil(this.onDestroy$)).subscribe(msg => {
       if (msg.gameStep === GAME_STEPS.ASCENDING) {
-        this.snackBarService.open('Les cartes vont se retourner dans 15sec, ' +
-                                  'vous pouvez les replacer dans l\'ordre désiré', 'success', 15000);
-        setTimeout(() => this.gameStatus = GAME_STEPS.ASCENDING, 15000);
+        this.snackBarService.open('Les cartes vont se retourner dans 30sec, ' +
+                                  'vous pouvez les replacer dans l\'ordre désiré', 'success', 30000);
+        setTimeout(() => this.gameStatus = GAME_STEPS.ASCENDING, 30000);
         return;
       }
       if (this.currentUser === msg.nextPlayer) {
@@ -92,9 +92,8 @@ export class PyramideComponent implements OnInit, OnDestroy {
             },
             disableClose: true
           });
-          this.dialog.afterClosed().subscribe((value) => {
+          this.dialog.afterClosed().subscribe(() => {
             this.hand.push(this._hand[msg.tour]);
-            this.pyramideService.show(this._hand[msg.tour], 'et a joué ' + value);
             this.pyramideService.turnOver(msg.tour, msg.gameStep);
           });
       }
@@ -133,7 +132,7 @@ export class PyramideComponent implements OnInit, OnDestroy {
           img: {
             name: card.value + '_' + card.sign
           },
-          title: 'Je montre'
+          title: 'Je montre à tout le monde'
         }
       });
       this.pyramideService.show(card, 'de sa main');
