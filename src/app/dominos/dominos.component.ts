@@ -23,7 +23,6 @@ export class DominosComponent implements OnInit, OnDestroy {
   hand = [];
   hands = [];
   nextPlayer;
-  winner;
   selectedDomino;
   selectedSlot;
   currentPlayer;
@@ -47,6 +46,7 @@ export class DominosComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.onDestroy$.next();
     this.dominosService.disconnect();
+    document.cookie = 'HAND=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
   }
 
   ngOnInit() {
@@ -81,8 +81,7 @@ export class DominosComponent implements OnInit, OnDestroy {
       }
       if (msg.winner) {
         this.nextPlayer = undefined;
-        this.winner = msg.winner;
-        this.snackBarService.open(`${msg.winner} a gagné la partie !`, 'success', 10000);
+        this.dialog.open(DialogPopupComponent, { data: { title: `${msg.winner} a gagné la partie ! Une nouvelle partie a été lancée` } });
       }
       this.hands = msg.hands;
       this.hand = msg.hands ? msg.hands[getCookie('USER')] : this.hand;
